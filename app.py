@@ -1,6 +1,5 @@
-# Deep-Analysis for Air Quality of Specific City from Turkey
-
 import streamlit as st
+import pandas as pd
 
 from Algorithms.anomaly import AnomalyDetectionAlgorithmsClass as ADAC
 from Algorithms.forecast import ForecastingAlgorithmsClass as FAC
@@ -11,19 +10,19 @@ from Preprocessing.preprocessing import PreprocessingClass as PRPC
 from Pages.pages import PagesClass as PC
 from Constants.constants import ConstantsClass as CC
 
-ADAC.test(st)
+# ADAC.
 
-FAC.test(st)
+# FAC.
 
-ATP.test(st)
+# ATP.
 
-VTC.test(st)
+# VTC.
 
-SC.test(st)
+# SC.
 
-PRPC.test(st)
+# PRPC.
 
-PC.test(st)
+# PC.
 
-CC.test(st)
+# CC.
 
