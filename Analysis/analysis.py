@@ -5,7 +5,7 @@ class AnalysisTypesClass:
         monthly_data_mean = df[[selected_param, 'monthsofyear']].groupby('monthsofyear').mean()
         fig = go.Figure()
         fig.add_trace(go.Line(x=monthly_data_mean.index, y=df[selected_param]))
-        fig.layout.update(title_text=selected_param, xaxis_rangeslider_visible=False, width=750, height=600)
+        fig.layout.update(title_text="Monthly Analysis For ------ " + selected_param, xaxis_rangeslider_visible=False, width=750, height=600)
         st.plotly_chart(fig)
 
     def annual_analysis(df, st, go, selected_param):
@@ -13,5 +13,5 @@ class AnalysisTypesClass:
         yearly_data_mean = df[[selected_param, 'year']].groupby('year').mean()
         fig = go.Figure()
         fig.add_trace(go.Line(x=yearly_data_mean.index, y=df[selected_param]))
-        fig.layout.update(title_text=selected_param, xaxis_rangeslider_visible=False, width=750, height=600)
+        fig.layout.update(title_text="Annual Analysis For ------ " + selected_param, xaxis_rangeslider_visible=False, width=750, height=600)
         st.plotly_chart(fig)

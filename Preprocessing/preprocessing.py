@@ -1,11 +1,4 @@
-
-from operator import index
-
-
 class PreprocessingClass:
-
-    # def change_dtype_utility(df, name, current_param, replaced_param):
-    #     return df[name].astype(str).str.replace(current_param,replaced_param, regex=True)
 
     def delete_unnecessary_rows(df):
         real_columns = df.loc[0]
@@ -13,7 +6,6 @@ class PreprocessingClass:
         df.drop(labels=0, axis=0, inplace=True)
         df.columns=df.columns.astype(str)
         df.rename(columns={'NaT':'Date'}, inplace=True)
-
     
     def change_data_type(df):
         params = df.columns
@@ -40,5 +32,8 @@ class PreprocessingClass:
 
     def convert_xlsx2csv(NEW_DATA_PATH, df):
         df.to_csv(NEW_DATA_PATH+'test.csv', index=False)
+
+    def create_average_dataset():
+        pass
 
 
