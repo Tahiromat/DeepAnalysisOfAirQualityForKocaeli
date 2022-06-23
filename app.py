@@ -22,10 +22,36 @@ st.set_page_config(page_title="Air Quality Analysis", page_icon="❗", layout="w
 hide_streamlit_style = """ <style> #MainMenu {visibility: hidden;} footer {visibility: hidden;} </style> """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
+with st.sidebar:
+    station_name_option = st.selectbox("Select Station Name", (
+            "Kocaeli - Alikahya-MTHM", 
+            "Kocaeli - Dilovası-İMES OSB 1-MTHM", 
+            "Kocaeli - Dilovası-İMES OSB 2-MTHM",
+            "Kocaeli - Dilovası",
+            "Kocaeli - Gebze - MTHM",
+            "Kocaeli - Gebze OSB - MTHM",
+            "Kocaeli - Gölcük-MTHM",
+            "Kocaeli - İzmit-MTHM",
+            "Kocaeli - Kandıra-MTHM",
+            "Kocaeli - Körfez-MTHM",
+            "Kocaeli - Yeniköy-MTHM",
+        )
+    )
+
+
+    # Choose Bar 
+    selected_page = option_menu(None, ["Home", "Visualization", "Analysis",  'Anomaly Detection', "Forecasting"], 
+    icons=['house', 'list-task', "list-task", 'list-task', 'list-task'], 
+    menu_icon="cast", default_index=0, orientation="vertical")
+
+
+
 # PATHS
 DATA_MAIN_PATH = "/home/tahir/Documents/DataScience/DeepAnalysis/Dataset/"
-STATION_NAME = 'Kocaeli - Yeniköy-MTHM'
+STATION_NAME = station_name_option
 EXTANTION = '.xlsx'
+
+
 
 data = pd.read_excel(DATA_MAIN_PATH + STATION_NAME + EXTANTION)
 PRPC.delete_unnecessary_rows(data)
@@ -35,16 +61,36 @@ PRPC.change_dataset_index(data)
 # Data columns list without time column
 parameters = data.columns[1:]
 
-# Choose Bar 
-selected_page = option_menu(None, ["Home", "Visualization", "Analysis",  'Anomaly Detection', "Forecasting"], 
-icons=['house', 'list-task', "list-task", 'list-task', 'list-task'], 
-menu_icon="cast", default_index=0, orientation="horizontal")
+
+
 
 if selected_page == "Home":
     st.title(STATION_NAME)
     st.markdown("#")
     # MAP View of specific station coordinates
-    VTC.map_visualization(st, pdk, 40.8, 29.433333) # GEBZE MTHM -lat - long
+    if station_name_option == "Kocaeli - Alikahya-MTHM":
+        VTC.map_visualization(st, pdk, 40.78143, 30.00410) # GEBZE MTHM -lat - long
+    elif station_name_option == "Kocaeli - Dilovası-İMES OSB 1-MTHM":
+        VTC.map_visualization(st, pdk, 40.83845, 29.57914)
+    elif station_name_option == "Kocaeli - Dilovası-İMES OSB 2-MTHM":
+        VTC.map_visualization(st, pdk, 40.83401, 29.57729)
+    elif station_name_option == "Kocaeli - Dilovası":
+        VTC.map_visualization(st, pdk, 40.78753, 29.54337)
+    elif station_name_option == "Kocaeli - Gebze - MTHM":
+        VTC.map_visualization(st, pdk, 40.79569, 29.41714)
+    elif station_name_option == "Kocaeli - Gebze OSB - MTHM":
+        VTC.map_visualization(st, pdk, 40.85281, 29.42858)
+    elif station_name_option == "Kocaeli - Gölcük-MTHM":
+        VTC.map_visualization(st, pdk, 40.71613, 29.81893)
+    elif  station_name_option == "Kocaeli - İzmit-MTHM":
+        VTC.map_visualization(st, pdk, 40.766666, 29.916668)
+    elif  station_name_option == "Kocaeli - Kandıra-MTHM":
+        VTC.map_visualization(st, pdk, 41.07100, 30.15221)
+    elif  station_name_option == "Kocaeli - Körfez-MTHM":
+        VTC.map_visualization(st, pdk, 40.77578, 29.73803)
+    elif  station_name_option == "Kocaeli - Yeniköy-MTHM":
+        VTC.map_visualization(st, pdk, 40.69393, 29.87756)
+    
     st.markdown("#")
     st.write(data.head(20))
     st.markdown("#")
@@ -72,20 +118,19 @@ elif selected_page == "Analysis":
             ATP.annual_analysis(data, st, go, param)
 
 elif selected_page == 'Anomaly Detection':
-
-    anomaly_option = st.selectbox("Select Anomaly Algorithm", ("Isolation Forest", "Prophet"))
     st.title("Anomaly Detection For " + STATION_NAME)
+    anomaly_option = st.selectbox("Select Anomaly Algorithm", ("Isolation Forest", "Autoencoder", "Prophet"))
     for param in parameters:
         if anomaly_option == "Isolation Forest":
             ADAC.isolationforest_anomaly(st, data, param)
+        elif anomaly_option == "Autoencoder":
+            ADAC.autoencoder_anomaly(st, data, param)
         else:
             ADAC.prophet_anomaly(st, data, param)
-            
 
 else :
     st.title("Forecasting For " + STATION_NAME)
     forecast_option = st.selectbox("Select Forecast Algorithm", ("LSTM", "ARIMA", "PROPHET"))
-
     for param in parameters:
         if forecast_option == "LSTM":
             FAC.lstm_forecast(st, data, param)

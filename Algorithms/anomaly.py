@@ -1,13 +1,72 @@
 import numpy as np
 import pandas as pd
 from prophet import Prophet
-import plotly.express as px
 from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+from plotly import graph_objs as go
+import plotly.express as px
+
+import tensorflow as tf
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Dense, LSTM, Dropout, RepeatVector, TimeDistributed
+
+import matplotlib.pyplot as plt
+
+
 
 class AnomalyDetectionAlgorithmsClass:
 
-    def lst_anomaly(param):
-        pass
+    def autoencoder_anomaly(st, data, selected_param):
+
+        st.write("On Process")
+    #     df = data[['Date', selected_param]]
+    #     df['Date'] = pd.to_datetime(df['Date'])
+
+    #     train = data[(data['Date'] >= '2014') & (data['Date'] <= '2022-02-01')]
+    #     test = data[(data['Date'] > '2022-02-01')]
+
+    #     scaler = StandardScaler()
+    #     scaler = scaler.fit(np.array(train[selected_param]).reshape(-1,1))
+
+    #     train[selected_param] = scaler.transform(np.array(train[selected_param]).reshape(-1,1))
+    #     test[selected_param] = scaler.transform(np.array(test[selected_param]).reshape(-1,1))
+
+    #     TIME_STEPS=30
+      
+    #     def create_sequences(X, y, time_steps=TIME_STEPS):
+    #         X_out, y_out = [], []
+    #         for i in range(len(X)-time_steps):
+    #             X_out.append(X.iloc[i:(i+time_steps)].values)
+    #             y_out.append(y.iloc[i+time_steps])
+            
+    #         return np.array(X_out), np.array(y_out)
+
+    #     X_train, y_train = create_sequences(train[[selected_param]], train[selected_param])
+    #     X_test, y_test = create_sequences(test[[selected_param]], test[selected_param])
+
+    #     np.random.seed(21)
+    #     tf.random.set_seed(21) 
+
+    #     model = Sequential()
+    #     model.add(LSTM(128, activation = 'tanh', input_shape=(X_train.shape[1], X_train.shape[2])))
+    #     model.add(Dropout(rate=0.2))
+    #     model.add(RepeatVector(X_train.shape[1]))
+    #     model.add(LSTM(128, activation = 'tanh', return_sequences=True))
+    #     model.add(Dropout(rate=0.2))
+    #     model.add(TimeDistributed(Dense(X_train.shape[2])))
+    #     model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="mse")
+    #     model.summary()
+
+    #     history = model.fit(
+    #         X_train,
+    #         y_train,
+    #         epochs=2,
+    #         batch_size=32,
+    #         validation_split=0.1,
+    #         callbacks=[keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, mode='min')],
+    #         shuffle=False)
+
 
     def isolationforest_anomaly(st, data, selected_param):
         df = data[['Date', selected_param]]

@@ -31,7 +31,7 @@ class VisualizationTypesClass:
         initial_view_state=pdk.ViewState(
             latitude=lat,
             longitude=lon,
-            zoom=12,
+            zoom=12.5,
             pitch=50,
         ),
         layers=[
