@@ -72,31 +72,24 @@ elif selected_page == "Analysis":
             ATP.annual_analysis(data, st, go, param)
 
 elif selected_page == 'Anomaly Detection':
+
+    anomaly_option = st.selectbox("Select Anomaly Algorithm", ("Isolation Forest", "Prophet"))
     st.title("Anomaly Detection For " + STATION_NAME)
+    for param in parameters:
+        if anomaly_option == "Isolation Forest":
+            ADAC.isolationforest_anomaly(st, data, param)
+        else:
+            ADAC.prophet_anomaly(st, data, param)
+            
 
 else :
     st.title("Forecasting For " + STATION_NAME)
+    forecast_option = st.selectbox("Select Forecast Algorithm", ("LSTM", "ARIMA", "PROPHET"))
 
-
-
-# Pages Steps
-# PC.
-
-# Scraping Steps
-# SC.
-
-# Preprocessing Steps
-
-
-
-
-
-
-
-
-# Anomaly Detection Steps
-# ADAC.
-
-# Forecasting Steps
-# FAC.
-
+    for param in parameters:
+        if forecast_option == "LSTM":
+            FAC.lstm_forecast(st, data, param)
+        elif forecast_option == "ARIMA":
+            FAC.arima_forecast(st, data, param)
+        else:
+            FAC.prophet_forecast(st, data, param)
