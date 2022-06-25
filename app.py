@@ -38,7 +38,6 @@ with st.sidebar:
         )
     )
 
-
     # Choose Bar 
     selected_page = option_menu(None, ["Home", "Visualization", "Analysis",  'Anomaly Detection', "Forecasting"], 
     icons=['house', 'list-task', "list-task", 'list-task', 'list-task'], 
@@ -58,7 +57,6 @@ PRPC.delete_unnecessary_rows(data)
 PRPC.change_data_type(data)
 PRPC.change_dataset_index(data)
 
-# Data columns list without time column
 parameters = data.columns[1:]
 
 
@@ -96,6 +94,7 @@ if selected_page == "Home":
     st.markdown("#")
     st.write("Each Pie on the chart show the mean of all the times for specific parameter for ------ " + STATION_NAME)
     VTC.pie_visualization(data, st, pd, px, parameters)
+
 
 elif selected_page == "Visualization":
     st.title("Visualization For " + STATION_NAME)

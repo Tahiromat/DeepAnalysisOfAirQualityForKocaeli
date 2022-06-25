@@ -1,3 +1,7 @@
+import os
+import pandas as pd
+import streamlit as st
+
 class PreprocessingClass:
 
     def delete_unnecessary_rows(df):
@@ -16,6 +20,7 @@ class PreprocessingClass:
             df[param] = df[param].astype(str).str.replace('.', '', regex=True)
             df[param] = df[param].astype(str).str.replace(',', '.', regex=True)
             df[param] = df[param].astype(float)
+        
 
     def change_dataset_index(df):
         df.index = df['Date']
@@ -30,10 +35,8 @@ class PreprocessingClass:
     def inverse_normalized_data_values(param):
         pass
 
-    def convert_xlsx2csv(NEW_DATA_PATH, df):
-        df.to_csv(NEW_DATA_PATH+'test.csv', index=False)
+    def convert_xlsx2csv(NEW_DATA_PATH, df_name, df):
+        df.to_csv(NEW_DATA_PATH + '/' + df_name + '.csv', index=False)
 
-    def create_average_dataset():
-        pass
-
+    
 
