@@ -18,7 +18,7 @@ import warnings
 warnings.simplefilter("ignore")
 
 # That command will manage the Streamlit layouts
-st.set_page_config(page_title="Air Quality Analysis", page_icon="❗", layout="wide")
+st.set_page_config(page_title="Deep Analysis", page_icon="❗", layout="wide")
 hide_streamlit_style = """ <style> #MainMenu {visibility: hidden;} footer {visibility: hidden;} </style> """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
@@ -43,14 +43,10 @@ with st.sidebar:
     icons=['house', 'list-task', "list-task", 'list-task', 'list-task'], 
     menu_icon="cast", default_index=0, orientation="vertical")
 
-
-
 # PATHS
 DATA_MAIN_PATH = "/home/tahir/Documents/DataScience/DeepAnalysis/Dataset/"
 STATION_NAME = station_name_option
 EXTANTION = '.xlsx'
-
-
 
 data = pd.read_excel(DATA_MAIN_PATH + STATION_NAME + EXTANTION)
 PRPC.delete_unnecessary_rows(data)
@@ -58,8 +54,6 @@ PRPC.change_data_type(data)
 PRPC.change_dataset_index(data)
 
 parameters = data.columns[1:]
-
-
 
 
 if selected_page == "Home":
@@ -110,14 +104,26 @@ elif selected_page == "Analysis":
     st.title("Analysis For " + STATION_NAME)
     # Analysis Steps
     for param in parameters:
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with  col1:
+            ATP.daily_analysis(data, st, go, param)
+        with  col2:
             ATP.monthly_analysis(data, st, pd, go, param)
-        with col2:
+        with col3:
             ATP.annual_analysis(data, st, go, param)
 
 elif selected_page == 'Anomaly Detection':
     st.title("Anomaly Detection For " + STATION_NAME)
+    # col1, col2, col3 = st.columns(3)
+    # with col1:
+    #     for param in parameters:
+    #         ADAC.isolationforest_anomaly(st, data, param)
+    # with col2:
+    #     for param in parameters:
+    #         ADAC.autoencoder_anomaly(st, data, param)
+    # with col3:
+    #     for param in parameters:
+    #         ADAC.prophet_anomaly(st, data, param)
     anomaly_option = st.selectbox("Select Anomaly Algorithm", ("Isolation Forest", "Autoencoder", "Prophet"))
     for param in parameters:
         if anomaly_option == "Isolation Forest":

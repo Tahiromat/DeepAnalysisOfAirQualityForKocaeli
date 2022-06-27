@@ -24,6 +24,7 @@ class PreprocessingClass:
 
     def change_dataset_index(df):
         df.index = df['Date']
+        df = df.resample('D').mean()
 
 
     def replace_nullvalues_with_mean(df):

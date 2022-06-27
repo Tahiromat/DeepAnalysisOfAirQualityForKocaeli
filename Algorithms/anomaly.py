@@ -19,7 +19,7 @@ class AnomalyDetectionAlgorithmsClass:
 
     def autoencoder_anomaly(st, data, selected_param):
 
-        st.write("On Process")
+        st.write("Under Development")
     #     df = data[['Date', selected_param]]
     #     df['Date'] = pd.to_datetime(df['Date'])
 
@@ -78,8 +78,10 @@ class AnomalyDetectionAlgorithmsClass:
         df['outliers'] = pd.Series(model.predict(df[[selected_param]])).apply(lambda x: 'yes' if (x == -1) else 'no')
         
         fig2 = px.scatter(df.reset_index(), x='Date', y=selected_param, color='outliers')
-        fig2.layout.update(title_text=selected_param, xaxis_rangeslider_visible=True, width=800, height=500)
+        fig2.layout.update(title_text=selected_param, xaxis_rangeslider_visible=False, width=800, height=500)
         st.plotly_chart(fig2)
+
+
 
     def prophet_anomaly(st, data, selected_param):
         df = data[['Date', selected_param]]
@@ -89,10 +91,10 @@ class AnomalyDetectionAlgorithmsClass:
         data = df.reset_index()[['Date', selected_param]].rename({'Date':'ds', selected_param:'y'}, axis='columns')
         train = data[(data['ds'] >= '2014') & (data['ds'] <= '2022-02-01')]
         test = data[(data['ds'] > '2022-02-01')]
-        
+
         m = Prophet(changepoint_range=0.95)
         m.fit(train)
-        future = m.make_future_dataframe(periods=180, freq='D')
+        future = m.make_future_dataframe(periods=365, freq='D')
         forecast = m.predict(future)
         result = pd.concat([data.set_index('ds')['y'], forecast.set_index('ds')[['yhat','yhat_lower','yhat_upper']]], axis=1)
         # fig2 = m.plot(forecast)
@@ -100,8 +102,8 @@ class AnomalyDetectionAlgorithmsClass:
         result['uncertainty'] = result['yhat_upper'] - result['yhat_lower']
         result['anomaly'] = result.apply(lambda x: 'Yes' if(np.abs(x['error']) > 1.5*x['uncertainty']) else 'No', axis = 1)
        
-        fig2 = px.scatter(result.reset_index(), x='ds', y='y', color='anomaly')
-        fig2.layout.update(title_text=selected_param, xaxis_rangeslider_visible=True, width=800, height=500)
+        fig2 = px.line(result.reset_index(), x='ds', y='y', color='anomaly')
+        fig2.layout.update(title_text=selected_param, xaxis_rangeslider_visible=False, width=800, height=500)
         st.plotly_chart(fig2)
 
 

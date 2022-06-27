@@ -35,7 +35,6 @@ class VisualizationTypesClass:
             pitch=50,
         ),
         layers=[
-            
             pdk.Layer(
                 'ScatterplotLayer',
                 # data=df,
